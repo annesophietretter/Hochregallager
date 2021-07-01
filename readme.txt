@@ -1,0 +1,1 @@
+Willkommen zu unserem Simulationsprogramm.

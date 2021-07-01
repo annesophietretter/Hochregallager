@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <title>Hochregallager</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+       
+        <link href="style.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+        </style>
+
+        <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+        <script src="app.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+
+    <body onload="setup();">
+        <!-- Section of the main grid in wich our containers are located -->
+        <div class="maingrid">
+            <!-- Opening up the first column of the main grid -->
+            <div>
+                <!-- Start container Lageruebersicht -->
+                <div id="LagerUebersicht" class="contentContainer"  style="width:500px;height:600px; float: right;">
+                    <h1  class="header"> Lagerübersicht</h1>
+                    <div class="grid" id="LagerUebersicht">
+                        <div id="grid1_1">
+                            <span id="1_1" class="dot">
+                                <button class="buttonInfo btn" onclick="openInfo('1_1')">
+                                    <label id="status1_1" style="position: absolute; bottom:3px" >+</label>
+                                </button>
+                            </span>
+                        </div>
+                        <div id="grid1_2">
+                            <span id="1_2" class="dot">
+                                <button class="buttonInfo btn" onclick="openInfo('1_2')">
+                                    <label id="status1_2" style="position: absolute; bottom:3px" >+</label>
+                                </button>
+                            </span>
+                        </div>
+                        <div id="grid1_3">
+                            <span id="1_3" class="dot">
+                                <button class="buttonInfo btn" onclick="openInfo('1_3')">
+                                    <label id="status1_3" style="position: absolute; bottom:3px" >+</label>
+                                </button>
+                            </span>
+                        </div>
+                        <div id="grid2_1">
+                            <span id="2_1" class="dot">
+                                <button class="buttonInfo btn" onclick="openInfo('2_1')">
+                                    <label id="status2_1" style="position: absolute; bottom:3px" >+</label>
+                                </button>
+                            </span>
+                        </div>
+                        <div id="grid2_2">
+                            <span id="2_2" class="dot">
+                                <button class="buttonInfo btn" onclick="openInfo('2_2')">
+                                    <label id="status2_2" style="position: absolute; bottom:3px" >+</label>
+                                </button>
+                            </span>
+                        </div>
+                        <div id="grid2_3">
+                            <span id="2_3" class="dot">
+                                <button class="buttonInfo btn" onclick="openInfo('2_3')">
+                                    <label id="status2_3" style="position: absolute; bottom:3px" >+</label>
+                                </button>
+                            </span>
+                        </div>
+                        <div id="grid3_1">
+                            <span id="3_1" class="dot">
+                                <button class="buttonInfo btn" onclick="openInfo('3_1')">
+                                    <label id="status3_1" style="position: absolute; bottom:3px" >+</label>
+                                </button>
+                            </span>
+                        </div>
+                        <div id="grid3_2">
+                            <span id="3_2" class="dot">
+                                <button class="buttonInfo btn" onclick="openInfo('3_2')">
+                                    <label id="status3_2" style="position: absolute; bottom:3px" >+</label>
+                                </button>
+                            </span>
+                        </div>
+                        <div id="grid3_3">
+                            <span id="3_3" class="dot">
+                                <button class="buttonInfo btn" onclick="openInfo('3_3')">
+                                    <label id="status3_3" style="position: absolute; bottom:3px" >+</label>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <button class="btn" style="position:relative; bottom:-70px; right:-345px; width: 150px;" onclick="fillAll()">
+                        Alles Auffüllen
+                    </button>
+                </div> 
+            </div> 
+
+            <!-- Opening up the second column of the main grid -->
+            <div>
+                <!-- Start container Auslastung -->
+                <div class="contentContainer" style="width:250px;height:300px">
+                    <h1 class="header"> Auslastung </h1>
+                    <label class="myFont" id="belegt_label">Belegte Fächer: 0</label>
+                    <canvas id="myChart" class="doughnut" style="position: absolute; margin-top: 30px; width:10px; height: 10px;"></canvas>
+                </div>
+
+                <!-- Start container Timer -->
+                <div class="contentContainer" style="display: inline-block; width:250px; height:300px; background-color: #217446;">
+                    <h1 class="header"> Timer </h1>
+                    <label class="myFont">T:</label>
+                    <label class="myFont" id="time_label">15.05.2019 12:10:00</label>
+                    <br>
+                    <br>
+                    <label class="myFont">X: </label>
+                    <label class="myFont" id="horizontal">0</label>
+                    <br>
+                    <label class="myFont">Y: </label>
+                    <label class="myFont" id="vertikal">0</label>
+                    <br>
+                    <canvas class="canvas" id="myCanvas" width="200" height="100"></canvas>
+                    <button class="buttonStart" id="reset_button" style="margin-top: 15px; margin-left: 5px; width: 85px;" onclick="resetSimulation()">
+                        <label>Reset</label>
+                    </button>
+                    <button class="buttonStart" id="start_button" style=" width: 85px; margin-left: 67px; height: 40px;" onclick="startSimulation()">
+                        <label>Start</label>
+                    </button>
+                </div>
+
+                <!-- Start container Bestandsveränderung -->
+                <div class="contentContainer" style="width:520px;height:271px">
+                    <h1 class="header"> Bestandsveränderung</h1>
+                    <canvas id="myLinechart" style="position: absolute; margin-top: 35px;width:510px;height: 230px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section of the Info boxes that hover over our main grid -->
+
+    <!-- Start container Einlagerunsinfo -->
+    <div id="infoBox" class="contentContainer overlay shadow" style="display:none">
+        <h2 class="header"> Einlagerunsinfo</h2>
+        <label class="myFont" id="fachstatus" style="margin-left: 10px;">Fach 1_1 ist leer.</label>
+        <br>
+        <br>
+        <label class="myFont"><u>Neue Ware</u></label>
+        <br>
+        
+        <label class="myFont">
+            RFID-Adresse:
+            <input type="text" name="serialno" placeholder="000000" id="rfid" style="width: 50px;">
+        </label>
+        <br>
+        <label class="myFont">
+            ID-Nummer:
+            <input type="text" name="serialno" placeholder="000000" id="id-number" style="width: 50px;">
+        </label>
+        <br>
+        <label class="myFont">
+            Farbe:
+            <select id="selection">
+                <option id="option-1">Weiß</option>
+                <option id="option-2">Blau</option>
+                <option id="option-3">Rot</option>
+              </select>
+        </label>
+        <button class="btn" style="position:absolute; bottom:10px; right:10px;" onclick="closeInfo()">
+            <i class="fa fa-times" ></i>
+        </button>
+        <button class="btn" style="position:absolute; bottom:10px; right:60px;" onclick="checkInfo()" >
+            <i class="fa fa-check" ></i>
+        </button>
+    </div> 
+
+    <!-- Start container Ergebnismeldung -->
+    <div id="Ergebnismeldung" class="contentContainer overlay shadow" style="display:none">
+        <h2 class="header"> Ergebnismeldung</h2>
+        <label id="Ergebnismeldung-label" class="myFont">Die Ware (ID/RDIF)</label>
+        <br>
+        <label id="Ergebnismeldung-label2" class="myFont"> wird in das Fach xx eingelagert</label>
+        <button class="btn" style="position:absolute; bottom:10px; right:10px;" onclick="closeErgebnismeldung()">
+            <i class="fa fa-times" ></i>
+        </button>
+    </div> 
+
+    <!-- Start container Einlagerunsinfo -->
+    <div id="InfoFach" class="contentContainer overlay shadow" style="display:none">
+        <h2 id="headerInfoFach" class="header"> Info Fach</h2>
+        <label class="myFont" id="InfoFach-rfidLabel">RFID-Adresse: 424242</label>
+        <br>
+        <label class="myFont" id="InfoFach-idLabel">ID-Nummer: 000042</label>
+        <span  class="dot" id = "InfoFach-dot" style="background-color: white; position:absolute; top:30px; right:30px; z-index: 10;"></span>
+        <button class="btn" style="position:absolute; bottom:10px; left:10px; width: 170px; height: 40px;" onclick="kickItem()">Ware Auslagern</button>
+        <button class="btn" style="position:absolute; bottom:10px; right:10px;" onclick="closeInfoFach()">
+            <i class="fa fa-times" ></i>
+        </button>
+    </div> 
+
+    <!-- Start container Error -->
+    <div id="Error" class="contentContainer overlay shadow" style="display:none; background-color: #d24525;">
+        <h2 id="headerInfoFach" class="header"> Fehler in Eingabe </h2>
+        <label class="myFont">Es ist ein Fehler bei der Datenverarbeitung</label>
+        <br>
+        <label class="myFont">aufgetreten. Bitte überprüfen Sie ihre </label>
+        <br>
+        <label class="myFont">Eingabe. Sowohl die ID-Nummer als auch </label>
+        <br>
+        <label class="myFont">die RFID-Adresse müssen aus einer sechs-</label>
+        <br>
+        <label class="myFont">stelligen Nummer bestehen.</label>
+        <button class="btn" style="position:absolute; bottom:10px; right:10px;" onclick="closeError()">
+            <i class="fa fa-times" ></i>
+        </button>
+    </div> 
+
+
+    </body>
+</html>
